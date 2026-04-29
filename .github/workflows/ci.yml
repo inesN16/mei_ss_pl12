@@ -74,7 +74,8 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Downcase image name
-        run: echo "IMAGE_NAME=${{ env.IMAGE_NAME }}" >> $GITHUB_ENV
+        run: |
+          echo "IMAGE_NAME_LOWER=${{ env.IMAGE_NAME,,}}" >> $GITHUB_ENV
 
       - name: Build Docker image locally
         uses: docker/build-push-action@v7
@@ -82,14 +83,14 @@ jobs:
           context: .
           push: false
           load: true
-          tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          tags: ${{ env.IMAGE_NAME_LOWER }}:${{ github.sha }}
 
       - name: Run container
         run: |
           docker run -d \
             --name secure-coding-api \
             -p 5001:5001 \
-            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.IMAGE_NAME_LOWER }}:${{ github.sha }}
 
       - name: Smoke test container
         run: |
