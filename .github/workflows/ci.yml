@@ -12,6 +12,7 @@ permissions:
 env:
   IMAGE_NAME: ghcr.io/inesn16/mei_ss_pl12/secure-coding-api
 
+
 jobs:
   test:
     name: Test REST API source code
